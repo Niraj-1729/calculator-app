@@ -1,3 +1,4 @@
+import 'package:calculator/calci.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -9,8 +10,9 @@ void main() {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-
+    return const MaterialApp(
+      debugShowCheckedModeBanner: true,
+   home: CalculatorApp(),
     );
   }
 }
