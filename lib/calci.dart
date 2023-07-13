@@ -1,10 +1,6 @@
-import 'dart:ui';
-
-import 'package:calculator/widget%5D/btn.dart';
 import 'package:calculator/colors.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:math_expressions/math_expressions.dart';
 
 class CalculatorApp extends StatefulWidget {
   const CalculatorApp({super.key});
@@ -14,19 +10,101 @@ class CalculatorApp extends StatefulWidget {
 }
 
 class _CalculatorAppState extends State<CalculatorApp> {
+  double firstnum = 0.0;
+  double secondnum = 0.0;
+  var input = '';
+  var output = '';
+  var operation = '';
+  
+
+  onButtonClick(value) {
+    //if value=AC
+    if (value == "AC") {
+      input = '';
+      output = '';
+    } else if (value == "<") {
+      if (input.isNotEmpty) {
+        input = input.substring(0, input.length - 1);
+      }
+    } else if (value == "=") {
+      if (input.isNotEmpty) {
+        var userInput = input;
+
+        userInput = input.replaceAll("x", "*");
+        Parser p = Parser();
+        Expression expression = p.parse(userInput);
+        ContextModel cm = ContextModel();
+        var finalValue = expression.evaluate(EvaluationType.REAL, cm);
+        output = finalValue.toString();
+        if (output.endsWith(".0")) {
+          output = output.substring(0, output.length - 2);
+        }
+
+        input = output;
+      }
+    } else {
+      input = input + value;
+    }
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Column(
         children: [
-          Expanded(child: Container(color: Colors.black)),
+          //input/output area
+          Expanded(
+              child: Container(
+            width: double.infinity,
+            padding: const EdgeInsets.all(12),
+            color: Colors.red,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              crossAxisAlignment: CrossAxisAlignment.end,
+              children: [
+                Text(
+                  input,
+                  style: TextStyle(
+                    fontSize: 48,
+                    color: Colors.white,
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                Text(
+                  output,
+                  style: TextStyle(
+                    fontSize: 34,
+                    color: Color.fromARGB(161, 255, 255, 255),
+                  ),
+                ),
+              ],
+            ),
+          )),
+          SizedBox(
+            height: 20,
+          ),
+
+          //button-------------------
           Row(
             children: [
-              button(text: "AC",butttonBgColor: operatorColor),
-              button(text: "<",butttonBgColor: operatorColor),
-              button(text: "",butttonBgColor: Colors.transparent),
-              button(text: "/"),
+              button(
+                  text: "AC",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
+              button(
+                  text: "<",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
+              button(text: "", butttonBgColor: Colors.transparent),
+              button(
+                text: "/",
+                butttonBgColor: operatorColor,
+                tcolor: orangeColor,
+              ),
             ],
           ),
           Row(
@@ -34,7 +112,10 @@ class _CalculatorAppState extends State<CalculatorApp> {
               button(text: "7"),
               button(text: "8"),
               button(text: "9"),
-              button(text: "x"),
+              button(
+                  text: "x",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
             ],
           ),
           Row(
@@ -42,7 +123,10 @@ class _CalculatorAppState extends State<CalculatorApp> {
               button(text: "4"),
               button(text: "5"),
               button(text: "6"),
-              button(text: "-"),
+              button(
+                  text: "-",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
             ],
           ),
           Row(
@@ -50,15 +134,27 @@ class _CalculatorAppState extends State<CalculatorApp> {
               button(text: "1"),
               button(text: "2"),
               button(text: "3"),
-              button(text: "+"),
+              button(
+                  text: "+",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
             ],
           ),
           Row(
             children: [
-              button(text: "%"),
+              button(
+                  text: "%",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
               button(text: "0"),
-              button(text: "."),
-              button(text: "="),
+              button(
+                  text: ".",
+                  butttonBgColor: operatorColor,
+                  tcolor: orangeColor),
+              button(
+                  text: "=",
+                  butttonBgColor: Colors.orange,
+                  tcolor: Colors.white),
             ],
           ),
         ],
@@ -77,7 +173,7 @@ class _CalculatorAppState extends State<CalculatorApp> {
             backgroundColor: butttonBgColor,
             padding: const EdgeInsets.all(22),
           ),
-          onPressed: () {},
+          onPressed: () => onButtonClick(text),
           child: Text(
             text,
             style: TextStyle(
