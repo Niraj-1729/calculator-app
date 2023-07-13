@@ -15,7 +15,6 @@ class _CalculatorAppState extends State<CalculatorApp> {
   var input = '';
   var output = '';
   var operation = '';
-  
 
   onButtonClick(value) {
     //if value=AC
@@ -66,17 +65,17 @@ class _CalculatorAppState extends State<CalculatorApp> {
               children: [
                 Text(
                   input,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 48,
                     color: Colors.white,
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Text(
                   output,
-                  style: TextStyle(
+                  style: const TextStyle(
                     fontSize: 34,
                     color: Color.fromARGB(161, 255, 255, 255),
                   ),
